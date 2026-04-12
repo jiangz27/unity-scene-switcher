@@ -98,7 +98,7 @@ public class SceneSwitcher
     {
         var tex = EditorGUIUtility.IconContent(@"UnityEditor.SceneView").image;
         GUI.changed = false;
-        GUILayout.Toggle(_sceneFocus, new GUIContent(null, tex, "Focus SceneView when entering play mode"), "Command");
+        GUILayout.Toggle(_sceneFocus, new GUIContent(null, tex), "Command");
         if (GUI.changed)
         {
             _sceneFocus = !_sceneFocus;
