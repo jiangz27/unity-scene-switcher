@@ -11,16 +11,16 @@ public class SceneSwitcher
     static SceneAsset[] _sceneAssets;
     static SceneAsset _startScene;
 
-    static int _index
+    static int _sceneIndex
     {
         get => EditorPrefs.GetInt("SceneIndex");
         set => EditorPrefs.SetInt("SceneIndex", value);
     }
 
-    static bool _sceneFocus
+    static bool _sceneLock
     {
-        get => EditorPrefs.GetBool("SceneFocus");
-        set => EditorPrefs.SetBool("SceneFocus", value);
+        get => EditorPrefs.GetBool("SceneLock");
+        set => EditorPrefs.SetBool("SceneLock", value);
     }
 
     [InitializeOnLoadMethod]
@@ -50,21 +50,21 @@ public class SceneSwitcher
         {
             if (obj == PlayModeStateChange.ExitingPlayMode)
             {
-                if (_sceneFocus)
+                if (_sceneLock)
                 {
                     var currentScene = EditorSceneManager.GetActiveScene().name;
                     for (int i = 0; i < _sceneNames.Length; i++)
                     {
                         if (_sceneNames[i] == currentScene)
                         {
-                            _index = i;
+                            _sceneIndex = i;
                         }
                     }
                 }
             }
             else if (obj == PlayModeStateChange.EnteredEditMode)
             {
-                var target = _sceneAssets[_index];
+                var target = _sceneAssets[_sceneIndex];
                 EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(target));
             }
         };
@@ -73,11 +73,11 @@ public class SceneSwitcher
     public static void ScenesDropdown()
     {
         GUILayout.FlexibleSpace();
-        var newIndex = EditorGUILayout.Popup(_index, _sceneNames, ToolbarStyles.dropdownButtonStyle, GUILayout.Width(150f));
-        if (newIndex != _index)
+        var newIndex = EditorGUILayout.Popup(_sceneIndex, _sceneNames, ToolbarStyles.dropdownButtonStyle, GUILayout.Width(150f));
+        if (newIndex != _sceneIndex)
         {
-            _index = newIndex;
-            var target = _sceneAssets[_index];
+            _sceneIndex = newIndex;
+            var target = _sceneAssets[_sceneIndex];
             if (EditorSceneManager.GetActiveScene().name != target.name)
             {
                 EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(target));
@@ -94,13 +94,13 @@ public class SceneSwitcher
         }
     }
 
-    public static void FocusSceneBtn()
+    public static void LockSceneToggle()
     {
         GUI.changed = false;
-        GUILayout.Toggle(_sceneFocus, new GUIContent("Lock"), ToolbarStyles.commandButtonStyle);
+        GUILayout.Toggle(_sceneLock, new GUIContent("Lock"), ToolbarStyles.commandButtonStyle);
         if (GUI.changed)
         {
-            _sceneFocus = !_sceneFocus;
+            _sceneLock = !_sceneLock;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace ToolBar
 		static ToolBarLeftButton()
 		{
 			ToolbarExtender.LeftToolbarGUI.Add(SceneSwitcher.ScenesDropdown);
-			ToolbarExtender.LeftToolbarGUI.Add(SceneSwitcher.FocusSceneBtn);
+			ToolbarExtender.LeftToolbarGUI.Add(SceneSwitcher.LockSceneToggle);
 			ToolbarExtender.LeftToolbarGUI.Add(SceneSwitcher.StartSceneBtn);
 		}
 	}
