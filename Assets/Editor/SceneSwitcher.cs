@@ -76,11 +76,14 @@ public class SceneSwitcher
         var newIndex = EditorGUILayout.Popup(_sceneIndex, _sceneNames, ToolbarStyles.dropdownButtonStyle, GUILayout.Width(150f));
         if (newIndex != _sceneIndex)
         {
-            _sceneIndex = newIndex;
-            var target = _sceneAssets[_sceneIndex];
+            var target = _sceneAssets[newIndex];
             if (EditorSceneManager.GetActiveScene().name != target.name)
             {
-                EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(target));
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
+                    _sceneIndex = newIndex;
+                    EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(target));
+                }
             }
         }
     }
